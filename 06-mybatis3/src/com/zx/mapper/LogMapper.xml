@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.zx.mapper.LogMapper">
+		<select id="selAll" resultType="Log">
+			select * from log
+		</select>
+		<!-- 当多参数时不需要写参数类型 -->
+		<select id="selByOutUnoInUno" resultType="Log">
+			select * from log where outuno=#{0} and inuno=#{1}
+		</select>
+		<!-- 动态sql -->
+			<!-- if的使用 -->
+	<!-- 	<select id="selByOutUnoInUno2" resultType="Log">
+			select * from log where 1=1
+			OGNL表达式，直接写key或对象的属性，不需要任何特殊符号
+			<if test="inUno!=null and inUno!=''">
+				and inuno=#{inUno}
+			</if>
+			<if test="outUno!=null and outUno!=''">
+				and outuno=#{outUno}
+			</select>
+			</if> -->
+			
+			<!-- where的使用 -->
+	<!-- <select id="selByOutUnoInUno2" resultType="Log">
+			select * from log 
+			<where>
+				where关键字会去掉sql内容中的第一个and  如果where标签中有内容则会生成where关键字  没有则不会
+				<if test="inUno!=null and inUno!=''">
+					and inuno=#{inUno}
+				</if>
+				<if test="outUno!=null and outUno!=''">
+					and outuno=#{outUno}
+				</if>
+			</where>
+		</select> -->
+		<!-- choose when otherwise 的使用 -->
+		<select id="selByOutUnoInUno2" resultType="Log">
+			select * from log 
+			<where>
+				<choose>
+					<when test="inUno!=null and inUno!=''">
+						and inuno=#{inUno}
+					</when>
+					<when test="outUno!=null and outUno!=''">
+						and outuno=#{outUno}
+					</when>
+					<when test="outUno!=null and outUno!='' and inUno!=null and inUno!=''">
+						 inuno=#{inUno} and outuno=#{outUno}
+					</when>
+					<otherwise>
+					
+					</otherwise>
+				</choose>
+			</where>
+		</select>
+		
+		<!-- set标签的使用 -->
+		<update id="upLog" parameterType="Log">
+			update log 
+			<set>
+				id=#{id},
+				<if test="outUno!=null and outUno!=''">
+				outuno=#{outUno},
+				</if>
+				<if test="inUno!=null and inUno!=''">
+				inuno=#{inUno},
+				</if>
+			</set>
+			where id=#{id}
+		</update>
+		
+		<!-- trim标签的使用 -->
+		<!-- <select id="selLog" parameterType="Log" resultType="Log">
+			select * from log
+				trim在拼接时前面会产生一个空格
+				<trim prefix="where" prefixOverrides="and">
+					and inuno=#{inUno}
+				</trim>
+		</select> -->
+		
+		<select id="selLog" parameterType="Log" resultType="Log">
+			<!-- value中必须用字符串拼接 bind常用于模糊查询 -->
+			<bind name="money" value="'$'+money"/>
+			select * from log
+				<trim prefix="where" prefixOverrides="and">
+					money=#{money}
+				</trim>
+		</select>
+		
+		<!-- foreach标签 常用于in查询 或者批量新增  但是效率低-->
+		<select id="selIn" parameterType="list" resultType="Log">
+			select * from log where id in
+			<foreach collection="list" item="a" open="(" close=")" separator=",">
+				#{a}
+			</foreach>
+		</select>
+		
+  </mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+     <!-- 数据源封装类
+     		数据源：获取数据连接 spring-jdbc.jar中
+      -->
+	<bean id="dateSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql://localhost:3306/ssm?serverTimezone=GMT"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="521521"></property>
+	</bean>
+	<!-- 相当于创建sqlSessionFactory对象，所需要的数据信息来源于dateSource -->
+	<bean id="factory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dateSource"></property>
+	</bean>
+	
+	<!-- 扫描器  相当于mybatis.xml中mapper标签下的package标签，会扫描xx.xx.mapper包后给对应接口创建对象 -->
+	<bean id="mapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 要扫描的包 -->
+		<property name="basePackage" value="com.zx.mapper"></property>
+		<!-- 和factory连结 -->
+		<property name="sqlSessionFactory" ref="factory"></property>
+	</bean>
+	<!-- 如果想要对一个对象的属性进行注入，必须交由spring进行管理
+		因此下面有spring管理service实现类
+	 -->
+	<bean id="airportServiceImpl" class="com.zx.service.impl.AirportServiceImpl">
+		<property name="airportMapper" ref="airportMapper"></property>
+	</bean>
+</beans>

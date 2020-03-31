@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- namespace:实现类的全路径： 包名+类名 -->
+ <mapper namespace="com.zx.FlowerMapper">
+ 	<!-- id:方法名 
+ 	 parameterType:定义参数类型 
+ 	 resultType:返回值类型
+ 	 
+ 	 如果方法返回值是list，在resultType中需要写list的泛型，因为mybatis对JDBC进行封装是一行一行读取数据的
+ 	
+ 	 -->
+ 	<select id="selAll" resultType="com.zx.pojo.Flower">
+ 		select * from flower
+ 	</select>
+ 	<select id="selOne" resultType="int">
+ 		select count(*) from flower
+ 	</select>
+ 	<!-- 该搜索方式中的resultType的返回值类型为map中的value类型，map中的key由select方法中的key决定 -->
+ 	<select id="selOther" resultType="com.zx.pojo.Flower">
+ 		select * from flower
+ 	</select>
+ </mapper>

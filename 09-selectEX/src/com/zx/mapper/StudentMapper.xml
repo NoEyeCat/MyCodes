@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.zx.mapper.StudentMapper">
+  	<select id="selStudents" parameterType="PageInfo" resultType="Students">
+  		select * from student 
+  		<where>
+  			<if test="sname!=null and sname!=''">
+  				<bind name="sname_pattern" value="'%'+sname+'%'"/>
+  				and name like #{sname_pattern}
+  			</if>
+  			<if test="tname!=null and tname!=''">
+  				<bind name="tname_pattern" value="'%'+tname+'%'" />
+  				and tid in (select id from teacher where name like #{tname_pattern})
+  			</if>
+  		</where>
+  		limit #{pageStart},#{pageSize}
+  	</select>
+  	
+  	<select id="selTotal" resultType="long" parameterType="PageInfo">
+  		select count(*) from student
+  		<where>
+  			<if test="sname!=null and sname!=''">
+  				<bind name="sname_pattern" value="'%'+sname+'%'"/>
+  				and name like #{sname_pattern}
+  			</if>
+  			<if test="tname!=null and tname!=''">
+  				<bind name="tname_pattern" value="'%'+tname+'%'"/>
+  				and tid in (select id from teacher where name like #{tname_pattern})
+  			</if>
+  		</where>
+  	</select>
+  	
+  </mapper>

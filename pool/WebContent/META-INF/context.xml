@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<!-- 数据库连接需要的参数 driverClassName=""驱动 url=""数据库连接url username=""数据库用户名 password=""数据库密码 
+		上限活跃和空闲连接数 maxActive=""上限活跃 maxIdle=""上限空闲 调用数据库连接池需要的属性 name=""连接池名称 选用哪种方式管理数据库连接池 
+		auth="Container" tomcat进行管理 连接失败的等待时间 （ms） 在连接超时后报告异常 maxWait="10000 在java中通过内部属性取到连接池对象时，其对象类型为 
+		type="javax.sql.DateSource" 数据源类型 -->
+	<Resource driverClassName="com.mysql.cj.jdbc.Driver"
+		url="jdbc:mysql://localhost:3306/ssm?serverTimezone=GMT"
+		username="root" password="521521" maxActive="50" maxIdle="20"
+		name="test" auth="Container" maxWait="10000"
+		type="javax.sql.DateSource" />
+	<WatchedResource>WEB-INF/web.xml</WatchedResource>
+</Context>

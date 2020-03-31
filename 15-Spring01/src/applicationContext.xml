@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+        <!-- id表示获取到对象的一直标识
+        	class表示创建哪一个类的对象
+        	constructor-arg表示使用有参构造方法来实例化对象 
+        	index为对象属性对应的索引编号（0开始）
+        	name表示属性名
+        	type表示属性类型
+        	如果类中有多个构造方法，可以通过这三个属性来确定使用哪个构造方法
+        	当有多个构造方法符合实例化条件时，会使用位于代码顺序最后的构造方法
+         -->
+     <bean id="peo" class="com.zx.pojo.People">
+     <!-- ref表示引用另一个bean value表示基本数据类型或字符串 -->
+		<constructor-arg name="id" value="1"></constructor-arg>
+		<constructor-arg name="name" value="张三"></constructor-arg>
+	</bean>
+	
+	<!-- 实例工厂创建对象 -->
+	<bean id="factory" class="com.zx.pojo.PeopleFactory2"></bean>
+	<bean id="peo1" factory-bean="factory" factory-method="newInstance" ></bean>
+	
+	<!-- 静态工厂创建对象 -->
+	<bean id="peo2" class="com.zx.pojo.PeopleFactory" factory-method="newInstance"></bean>
+	
+</beans>

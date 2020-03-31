@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+     <bean id="myAdvice" class="com.zx.advice.MyAdvice"></bean>
+     <aop:config>
+     	<aop:pointcut expression="execution(* com.zx.demo.Demo.demo01(String,int)) and args(name,age)" id="mypoint"/>
+     	<aop:pointcut expression="execution(* com.zx.demo.Demo.demo02(String)) and args(name)" id="mypoint2"/>
+     	<aop:aspect ref="myAdvice">
+     		<aop:before method="myBefore" pointcut-ref="mypoint" arg-names="name,age"/>
+     		<aop:before method="myBefore2" pointcut-ref="mypoint2" arg-names="name"/>
+     		<!-- <aop:after method="myAfter" pointcut-ref="mypoint"/>
+     		<aop:after-throwing method="myError" pointcut-ref="mypoint" throwing="e"/> -->
+     		<!-- <aop:around method="myArround" pointcut-ref="mypoint"/> -->
+     	</aop:aspect>
+     	
+     </aop:config>
+     <bean id="demo" class="com.zx.demo.Demo"></bean>
+</beans>

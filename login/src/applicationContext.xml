@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd"
+	default-autowire="byName">
+	<context:property-placeholder
+		location="calsspath:db.properties" />
+	<!-- 获取数据源 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driver}"></property>
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	<!-- 加载sqlsession对象 -->
+	<bean id="sqlFctory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="typeAliasesPackage" value="com.zx.pojo"></property>
+	</bean>
+	<!-- 创建包扫描器 -->
+	<bean id="mapper"
+		class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 要扫描的包 -->
+		<property name="basePackage" value="com.zx.mapper"></property>
+		<!-- 连接factory -->
+		<property name="sqlSessionFactoryBeanName" value="sqlFctory"></property>
+	</bean>
+	<!-- 利用bean对usersetvice进行注入 -->
+	<bean id="UserServiceImpl"
+		class="com.zx.service.impl.UserServiceImpl">
+		<property name="um" ref="userMapper"></property>
+	</bean>
+	<!-- aop -->
+
+	<!-- 使用cglib动态代理 -->
+	<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+
+	<bean id="MyBefore" class="com.zx.advice.BeforeAdvice"></bean>
+	<bean id="MyAfter" class="com.zx.advice.AfterAdvice"></bean>
+	<aop:config>
+		<aop:pointcut
+			expression="execution(* com.zx.service.impl.UserServiceImpl.logUser(..))"
+			id="MyPoint" />
+		<aop:advisor advice-ref="MyBefore" pointcut-ref="MyPoint" />
+		<aop:advisor advice-ref="MyAfter" pointcut-ref="MyPoint" />
+	</aop:config>
+</beans>

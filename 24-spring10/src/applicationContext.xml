@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd"
+        >
+        
+        <bean id="peo" class="com.zx.pojo.People" scope="request"></bean>
+        
+        <!-- 配置数据源 -->
+        <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        	<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+        	<property name="url" value="jdbc:mysql://localhost:3306/ssm?serverTimezone=GMT"></property>
+        	<property name="username" value="root"></property>
+        	<property name="password" value="521521"></property>
+        </bean>
+        
+        <!-- 配置sqlsession对象 -->
+        <bean id="factory" class="org.mybatis.spring.SqlSessionFactoryBean" autowire="byName">
+        	<property name="typeAliasesPackage" value="com.zx.pojo"></property>
+        </bean>
+        
+        <!-- 配置包扫描器 -->
+        <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        	<property name="basePackage" value="com.zx.mapper"></property>
+        	<property name="sqlSessionFactoryBeanName" value="factory"></property>
+        </bean>
+        
+        <!-- scope属性：
+        		singleton默认值 每次获取对象是单例的
+        		prototypoe 每次获取对象时重新实例化对象
+        		request 每次请求时重新实例化对象
+        		session 每个会话对象是单例的
+        		application 在application对象内是单例的
+        		-->
+        		
+   <bean id="teacher1" class="com.zx.demo.Teacher" scope="prototype"></bean>
+   
+   <!-- aop配置 -->
+   <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" autowire="byName"></bean>
+   <!-- 配置声明式事务 -->
+   <tx:advice id="txAdvice" transaction-manager="txManager">
+   	<tx:attributes>
+   		<!-- 那些方法需要事务控制 支持通配符 -->
+   		<!-- <tx:method name="insert" />
+   		<tx:method name="insUser"/> -->
+   		<!-- 上面两个方法使用通配符配置 -->
+   		<!-- 除增删改，其他事务都为只读，无法修改 -->
+   		<!-- propagation事务传播机制   isolation事务隔离级别 -->
+   		<tx:method name="ins*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+   		<tx:method name="del*"/>
+   		<tx:method name="upd*"/>
+   		<tx:method name="*" read-only="true"/>
+   	</tx:attributes>
+   </tx:advice>
+   <aop:config>
+   		<!-- 切点范围设置大写 -->
+   		<aop:pointcut expression="execution(* com.zx.service.impl.*.*(..))" id="mypoint"/>
+   		<aop:advisor advice-ref="txAdvice" pointcut-ref="mypoint"/>
+   </aop:config>
+   
+</beans>

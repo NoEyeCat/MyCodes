@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+        <!-- 配置通知类对象，在通知中需要引入
+        <bean id="myBefore" class="com.zx.advice.MyBeforeAdvice"></bean>
+        <bean id="myAfter" class="com.zx.advice.MyAfterAdvice"></bean>
+      	 配置切面
+        <aop:config>
+        	配置切点
+        	<aop:pointcut expression="execution(* com.zx.demo.Demo.demo02())" id="mypoint"/>
+        	配置通知
+        	<aop:advisor advice-ref="myBefore" pointcut-ref="mypoint"/>
+			<aop:advisor advice-ref="myAfter" pointcut-ref="mypoint"/>
+        </aop:config>
+        配置demo类进行测试
+        <bean id="demo" class="com.zx.demo.Demo"></bean> -->
+        
+        <bean id="myexception" class="com.zx.advice.MyThrowAdvice"></bean>
+        
+        <aop:config>
+        	<aop:pointcut expression="execution(* com.zx.demo.Demo.*(..))" id="mypoint"/>
+        	<!-- aspect中的ref表示方法在哪个类中0 -->
+        	<aop:aspect ref="myexception">
+        		<!-- method表示当触发通知时调用哪个通知方法	
+        			 aspectJ对通知要求低，但是触发异常时必须通过throwing属性告知异常对象是哪个
+        			 异常对象名必须和通知中方法参数名相同
+        		 -->
+        		<aop:after-throwing method="myexception" pointcut-ref="mypoint" throwing="e"/>
+        	</aop:aspect>
+        </aop:config>
+        
+        <bean id="demo" class="com.zx.demo.Demo"></bean>
+</beans>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+        <bean id="myThrows" class="com.zx.advice.MyThrowAdvice"></bean>
+        <bean id="arround" class="com.zx.advice.MyArround"></bean>
+	<aop:config>
+		<!-- 异常通知schema-base方式 -->
+		<!-- <aop:pointcut expression="execution(* com.zx.demo.Demo.demo01(..))" id="mypoint"/>
+		<aop:advisor advice-ref="myThrows" pointcut-ref="mypoint" /> -->
+		<!-- 异常通知 aspectJ方式 -->
+		<!-- <aop:aspect ref="myThrows">
+			<aop:pointcut expression="execution(* com.zx.demo.Demo.demo01(..))" id="mypoint"/>
+			<aop:after-throwing method="afterThrowing" pointcut-ref="mypoint" throwing="ex"/>
+		</aop:aspect> -->
+		<aop:pointcut expression="execution(* com.zx.demo.Demo.demo01(..))" id="myPoint"/>
+		<aop:advisor advice-ref="arround" pointcut-ref="myPoint"/>
+	</aop:config>
+		<bean id="demo" class="com.zx.demo.Demo"></bean>
+</beans>

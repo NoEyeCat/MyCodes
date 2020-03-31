@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- 封装数据源 -->
+	<bean name="dateSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="com.mysql.cj.jdbc.Driver"></property>
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/ssm?serverTimezone=GMT"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="521521"></property>
+	</bean>
+	<!-- 实例化sqlfactory对象 -->
+	<bean name="factory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dateSource"></property>
+	</bean>
+	<!-- 创建mapper扫描器 -->
+	<bean name="mapper"
+		class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 要扫描的包 -->
+		<property name="basePackage" value="com.zx.mapper"></property>
+		<!-- 连接factory -->
+		<property name="sqlSessionFactory" ref="factory"></property>
+	</bean>
+
+	<!-- 对service层的实现类进行mapper注入 -->
+	<bean id="userServiceImpl"
+		class="com.zx.service.impl.UserServiceImpl">
+		<property name="us" ref="userMapper"></property>
+	</bean>
+
+</beans>

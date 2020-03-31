@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.zx.mapper.TeacherMapper">
+  	<select id="selAll" resultType="teacher">
+ 		select 
+ 			s.id `students.student.sid`,
+ 			s.name `students.student.sname`,
+ 			t.id tid,
+ 			t.name tname,
+ 			s.age `students.student.sage`,
+ 			s.tid `students.student.stid`
+ 			from teacher t
+ 			left join student s on s.tid=t.id
+ 	</select>
+  </mapper>

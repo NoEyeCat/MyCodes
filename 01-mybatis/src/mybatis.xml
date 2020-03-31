@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- default引用environment的id，表示当前所使用的环境 -->
+	<environments default="default">
+	<!-- 声明可能使用的环境 -->
+		<environment id="default">
+			<!-- 使用原生JDBC事务
+				type属性可取值
+					JDBC ：jdbc的原生事务处理属性
+					MANAGED:把事务转交给其他容器 原生JDBC事务被标上setAutoMapping（flase）
+			 -->
+			<transactionManager type="JDBC"></transactionManager>
+			<!-- 
+				连接池设置
+					type属性可取值
+						UNPOOLED	不使用数据库连接池
+						POOLED		使用数据库连接池
+						JNDI	java本地目录命名接口 是用java调用其他语言资源
+			
+			 -->
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+				<property name="url" value="jdbc:mysql://localhost:3306/ssm?serverTimezone=GMT"/>
+				<property name="username" value="root"/>
+				<property name="password" value="521521"/>
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="com/zx/mapper/FlowerMapper.xml"/>
+	</mappers>
+</configuration>

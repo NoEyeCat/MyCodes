@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd"
+        default-autowire="default"
+        >
+   <bean id="teacher123" class="com.zx.demo.Teacher"></bean>
+   <bean id="people" class="com.zx.demo.People" autowire="constructor">
+   <!-- 自动注入如果是byname则在配置文件中寻找id与属性名相同的bean进行注入，
+   	如果是bytype则会寻找class和属性类型相同的bean进行注入 
+   如果使用constructor方式注入需要保证构造方法的参数名和配置文件中的id名称一致		-->
+   </bean>
+</beans>

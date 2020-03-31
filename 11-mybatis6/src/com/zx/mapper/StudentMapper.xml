@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.zx.mapper.StudentMapper">
+  <resultMap type="student" id="stuMap">
+  	<id column="id" property="sid"/>
+  	<result column="name" property="sname"/>
+  	<result column="age" property="sage"/>
+  	<result column="tid" property="tid"/>
+  </resultMap>
+  
+  
+  <select id="selAll" resultMap="stuMap" parameterType="int">
+  	select * from student where tid=#{0}
+  </select>
+  
+  </mapper>

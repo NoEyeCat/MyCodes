@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.zx.mapper.TeacherMapper">
+  	<resultMap type="teacher" id="teaMap">
+  		<id column="id" property="tid"/>
+  		<result column="name" property="tname"/>
+  	<collection property="students" select="com.zx.mapper.StudentMapper.selAll" column="id" >
+  	</collection>
+  	</resultMap>
+  
+  	<select id="selAll" resultMap="teaMap">
+  		select * from teacher
+  	</select>
+ 	
+ 	<resultMap type="teacher" id="teaMap1">
+ 		<id column="tid" property="tid"/>
+  		<result column="tname" property="tname"/>
+  		<collection property="students" ofType="student" >
+  			<id column="sid" property="sid"/>
+  			<result column="sname" property="sname"/>
+  			<result column="age" property="sage"/>
+  			<result column="stid" property="stid"/>
+  		</collection>
+ 	</resultMap>
+ 	<select id="selAll1" resultMap="teaMap1" >
+ 		select t.id tid,t.name tname,s.id sid,s.name sname,age,s.tid stid from teacher t left join student s on t.id=s.tid
+ 	</select>
+ 
+  </mapper>
